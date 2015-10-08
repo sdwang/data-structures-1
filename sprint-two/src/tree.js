@@ -2,8 +2,7 @@ var Tree = function(value) {
   var newTree = {};
   newTree.value = value;
 
-  // your code here
-  newTree.children = null;  // fix me
+  newTree.children = [];
   extend(newTree, treeMethods);
   return newTree;
 };
@@ -17,11 +16,18 @@ var extend = function(to, from) {
 }
 
 treeMethods.addChild = function(value) {
-  // your code here
-  newTree.children = null;  // fix me
+  // a child needs a value, and possible childen
+  this.children.push(Tree(value));
 };
 
-treeMethods.contains = function(target) {
+treeMethods.contains = function(target, isTrue) {
+  if (isTrue) { return true; }
+  isTrue = (this.value === target);
+  for (var i = 0; i < this.children.length; i++) {
+    // call contains on childen[i]
+    isTrue = this.children[i].contains(target, isTrue);
+  }
+  return isTrue;
 };
 
 
