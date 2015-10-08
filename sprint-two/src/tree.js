@@ -4,11 +4,17 @@ var Tree = function(value) {
 
   // your code here
   newTree.children = null;  // fix me
-
+  extend(newTree, treeMethods);
   return newTree;
 };
 
 var treeMethods = {};
+
+var extend = function(to, from) {
+  for (var key in from) {
+    to[key] = from[key];
+  }
+}
 
 treeMethods.addChild = function(value) {
   // your code here
