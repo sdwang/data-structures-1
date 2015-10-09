@@ -3,18 +3,22 @@
 // ------------------------
 // Instantiate a new graph
 var Graph = function() {
+  this.nodes = {};
 };
 
 // ------------------------
 // Add a node to the graph, passing in the node's value.
 Graph.prototype.addNode = function(node) {
-  this[node] = node;
+  //console.log(typeof node);
+  this.nodes[node] = {};
+  this.nodes[node].value = node;
+  this.nodes[node].edges = [];
 };
 
 // ------------------------
 // Return a boolean value indicating if the value passed to contains is represented in the graph.
 Graph.prototype.contains = function(node) {
-  if(this[node] !== undefined) {
+  if(this.nodes[node] !== undefined) {
     return true;
   }
   return false;
@@ -23,13 +27,16 @@ Graph.prototype.contains = function(node) {
 // ------------------------
 // Removes a node from the graph.
 Graph.prototype.removeNode = function(node) {
-  delete this[node];
+  //console.log(this.nodes[node]);
+  delete this.nodes[node];
+  //console.log(this.nodes[node]);
 };
 
 // ------------------------
 // Returns a boolean indicating whether two specified nodes are connected.  Pass in the values contained in each of the two nodes.
 Graph.prototype.hasEdge = function(fromNode, toNode) {
-  if(fromNode.toNode === toNode && toNode.fromNode === fromNode) {
+  //console.log(this.nodes[fromNode.toNode]===toNode, this.nodes[toNode.fromNode]===fromNode);
+  if(this.nodes[fromNode].edges.indexOf(toNode) > -1 && this.nodes[toNode].edges.indexOf(fromNode) > -1) {
     return true;
   } else {
     return false;
@@ -39,18 +46,29 @@ Graph.prototype.hasEdge = function(fromNode, toNode) {
 // ------------------------
 // Connects two nodes in a graph by adding an edge between them.
 Graph.prototype.addEdge = function(fromNode, toNode) {
-  fromNode.toNode = toNode;
-  toNode.fromNode = fromNode;
+  this.nodes[fromNode].edges.push(toNode);
+  this.nodes[toNode].edges.push(fromNode);// ??? without, works
 };
 
 // ------------------------
 // Remove an edge between any two specified (by value) nodes.
 Graph.prototype.removeEdge = function(fromNode, toNode) {
+  var index = this.nodes[fromNode].edges.indexOf(toNode);
+  this.nodes[fromNode].edges[index] = undefined;
+  index = this.nodes[toNode].edges.indexOf(fromNode);
+  this.nodes[toNode].edges[index] = undefined;
 };
 
 // ------------------------
 // Pass in a callback which will be executed on each node of the graph.
 Graph.prototype.forEachNode = function(cb) {
+  for(var key in this.nodes) {
+    console.log(this.nodes[key]);
+  }
+  for(var key in this.nodes) {
+    //console.log(this.nodes[key]);
+    cb(this.nodes[key].value); //???
+  }
 };
 
 /*
