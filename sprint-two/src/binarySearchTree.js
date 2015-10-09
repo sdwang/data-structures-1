@@ -21,8 +21,6 @@ BinarySearchTree.methods.insert = function(newVal) {
 };
 
 BinarySearchTree.methods.contains = function(value, isFound) {
-  console.log('value:', value, 'this:',this,'this.value', this.value);
-  debugger;
   if (isFound) { return true; }
   isFound = (this.value === value);
   if (this.right === null && value > this.value) {
@@ -37,8 +35,14 @@ BinarySearchTree.methods.contains = function(value, isFound) {
   return isFound;
 };
 
-BinarySearchTree.methods.depthFirstLog = function(cb) {
-
+BinarySearchTree.methods.depthFirstLog = function(cb, arr) {
+  cb(this.value);
+  if ( this.left !== null ) {
+    this.left.depthFirstLog(cb);
+  }
+  if ( this.right !== null ) {
+    this.right.depthFirstLog(cb);
+  }
 };
 
 /*
