@@ -8,35 +8,53 @@ var HashTable = function() {
 HashTable.prototype.insert = function(k, v) {
   var index = getIndexBelowMaxForKey(k, this._limit);
   if ( this._storage[index] === undefined ) { this._storage[index] = []; }
-  var bucket = this._storage[index];
-  for ( var i = 0; i < bucket.length; i++ ) {
-    if ( bucket[i][0] === k ) { var place = bucket[i]; }
-  }
-  if ( place ) {
-    place[1] = v;
-  } else {
-    this._storage[index].push( [k, v] );
-  }
+  // var bucket = this._storage[index];
+  // for ( var i = 0; i < bucket.length; i++ ) {
+  //   if ( bucket[i][0] === k ) { var tuple = bucket[i]; }
+  // }
+
+  // if ( tuple ) {
+  //   tuple[1] = v;
+  // } else {
+  //   this._storage[index].push( [k, v] );
+  // }
+  var tuple = this.find(k);
+  if ( tuple ) { tuple[1] = v; }
+  this._storage[index].push( [k, v] );
 };
 
 HashTable.prototype.retrieve = function(k) {
   var index = getIndexBelowMaxForKey(k, this._limit);
-  var bucket = this._storage[index];
-  for ( var i = 0; i < bucket.length; i++ ) {
-    if ( bucket[i] === undefined ) { return null; }
-    if ( bucket[i][0] === k ) { return bucket[i][1]; }
-  }
+  // var bucket = this._storage[index];
+  // for ( var i = 0; i < bucket.length; i++ ) {
+  //   if ( bucket[i] === undefined ) { return null; }
+  //   if ( bucket[i][0] === k ) { return bucket[i][1]; }
+  // }
+  var tuple = this.find(k);
+  return tuple[1];
 };
 
 HashTable.prototype.remove = function(k) {
   var index = getIndexBelowMaxForKey(k, this._limit);
-  var bucket = this._storage[index];
-  for ( var i = 0; i < bucket.length; i++ ) {
-    if ( bucket[i][0] === k ) { bucket[i] = undefined; }
-  }
+  // var bucket = this._storage[index];
+  // for ( var i = 0; i < bucket.length; i++ ) {
+  //   if ( bucket[i][0] === k ) { bucket[i] = undefined; }
+  // }
+  var tuple = this.find(k);
+  tuple[1] = null;
 };
 
-
+HashTable.prototype.find = function (k) {
+  // afterwards var x = this.find(k) === 'tuple'
+  // thus x[0] === key, x[1] === value
+  var index = getIndexBelowMaxForKey(k, this._limit);
+  var bucket = this._storage[index];
+  var result = undefined;
+  for ( var i = 0; i < bucket.length; i++ ) {
+    if ( bucket[i][0] === k ) { result = bucket[i]; }
+  }
+  return result;
+}
 
 /*
  * Complexity: What is the time complexity of the above functions?
