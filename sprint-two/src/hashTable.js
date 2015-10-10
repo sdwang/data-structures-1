@@ -29,14 +29,15 @@ HashTable.prototype.insert = function(k, v) {
 
 HashTable.prototype.retrieve = function(k) {
   var tuple = this.find(k);
+  if (tuple === undefined) {
+    return undefined;
+  }
   return tuple[1];
 };
 
 HashTable.prototype.remove = function(k) {
   var index = getIndexBelowMaxForKey(k, this._limit);
-  // if(this.find(k) === undefined) {
-  //   debugger;
-  // }
+
   var tuple = this.find(k);
   tuple[1] = null;
 
@@ -48,9 +49,10 @@ HashTable.prototype.remove = function(k) {
       tempLength++;
     }
   }
-  if( tempLength === this._maxBucket ) {
+  if( tempLength >= this._maxBucket-1 ) {
+    this._maxBucket = tempLength;
     this._maxBucket--;
-    if((this._maxBucket / this._limit) < 0.50) {
+    if((this._maxBucket / this._limit) < 0.10) {
       this.defactor();
     }
   }
@@ -62,9 +64,11 @@ HashTable.prototype.find = function (k) {
   var index = getIndexBelowMaxForKey(k, this._limit);
   var bucket = this._storage[index];
   var result = undefined;
-  for ( var i = 0; i < bucket.length; i++ ) {
-    if ( bucket[i][0] === k ) { result = bucket[i]; }
-  }
+  if(bucket !== undefined) {
+    for ( var i = 0; i < bucket.length; i++ ) {
+      if ( bucket[i][0] === k ) { result = bucket[i]; }
+    };
+  };
   return result;
 }
 
@@ -72,7 +76,6 @@ HashTable.prototype.refactor = function () {
 // if we hit our limit, we have to:
 // collect all tuples
   var tuples = this.findTuples();
-  console.log(tuples);
   // reset limit
   this._limit = this._limit * 2;
 // make new storage (that will be twice as big)
@@ -80,13 +83,15 @@ HashTable.prototype.refactor = function () {
 // hash keys from previous storage
 // distribute tuples using hashed keys
   for ( var x = 0; x < tuples.length; x++ ) {
-    this.insert(tuples[x][0], tuples[x][1]);
+    if ( tuples[x] !== undefined ) {
+      if ( tuples[x][1] !== null ) {
+        this.insert(tuples[x][0], tuples[x][1]);
+      }
+    }
   }
-  console.log(this._storage);
 }
 
 HashTable.prototype.defactor = function() {
-
   //collects all tuples
   var tuples = this.findTuples();
   // lowers limit
@@ -95,16 +100,21 @@ HashTable.prototype.defactor = function() {
   this._storage = LimitedArray(this._limit);
   // re-inserts tuples
   for ( var x = 0; x < tuples.length; x++ ) {
-    this.insert(tuples[x][0], tuples[x][1]);
+    if ( tuples[x] !== undefined ) {
+      if ( tuples[x][1] !== null ) {
+        this.insert(tuples[x][0], tuples[x][1]);
+      }
+    }
   }
 }
 
 HashTable.prototype.findTuples = function() {
+  // NOTE: storage oddly large
   var temp = [];
-  for ( var i = 0; i < this._storage.length; i++ ) {
-    for ( var j = 0; j < this._storage[i].length; j++ ) {
-      temp.push(this._storage[i][j]);
-      console.log(this._storage[i][j]);
+  
+  for ( var key in this._storage ) {
+    for ( var j = 0; j < this._storage[key].length; j++ ) {
+      temp.push(this._storage[key][j]);
     }
   }
   return temp;
