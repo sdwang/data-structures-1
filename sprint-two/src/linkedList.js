@@ -63,4 +63,10 @@ var Node = function(value) {
 
 /*
  * Complexity: What is the time complexity of the above functions?
+   1)  addToTail() is constant time. 0(1)
+
+   2)  removeHead() is constant time. 0(1)
+   
+   3)  contains() is linear time. 0(n)
+       Must search through potentially every node to find values.
  */

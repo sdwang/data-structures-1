@@ -20,4 +20,11 @@ setPrototype.remove = function(item) {
 
 /*
  * Complexity: What is the time complexity of the above functions?
+    1) Set() is constant time. O(1)
+
+    2) add() is constant time. O(1)
+
+    3) contains() is constant time. O(1)
+
+    4) remove() is constant time. O(1)
  */

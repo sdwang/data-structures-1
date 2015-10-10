@@ -47,4 +47,14 @@ BinarySearchTree.methods.depthFirstLog = function(cb, arr) {
 
 /*
  * Complexity: What is the time complexity of the above functions?
+    1) BinarySearchTree() is constant time. O(1)
+
+    2) insert() is logarithmic time. O(log n)
+       By halving the search size each time via right/left, we reduce
+       iterative search time.
+
+    3) contains() is logarithmic time. O(log n)
+
+    4) depthFirstLog is linear time. O(n)
+       Recursively call callback on every node in the tree.   
  */

@@ -65,4 +65,19 @@ Graph.prototype.forEachNode = function(cb) {
 
 /*
  * Complexity: What is the time complexity of the above functions?
+    1) addNode() is constant time. O(1)
+
+    2) contains() is constant time. O(1)
+
+    3) removeNode() is constant time. O(1)
+
+    4) hasEdge() is constant time. O(1)
+
+    5) addEdge() is constant time. O(1)
+
+    6) removeEdge() is linear time. O(n)
+       Finding index using indexOf() requires iterative lookup.
+
+    7) forEachNode() is linear time. O(n)
+       Iterating over keys in this.nodes is a linear operation.
  */

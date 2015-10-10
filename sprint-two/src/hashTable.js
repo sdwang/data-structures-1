@@ -14,13 +14,11 @@ HashTable.prototype.insert = function(k, v) {
 };
 
 HashTable.prototype.retrieve = function(k) {
-  var index = getIndexBelowMaxForKey(k, this._limit);
   var tuple = this.find(k);
   return tuple[1];
 };
 
 HashTable.prototype.remove = function(k) {
-  var index = getIndexBelowMaxForKey(k, this._limit);
   var tuple = this.find(k);
   tuple[1] = null;
 };
@@ -28,7 +26,6 @@ HashTable.prototype.remove = function(k) {
 HashTable.prototype.find = function (k) {
   // afterwards var x = this.find(k) === 'tuple'
   // thus x[0] === key, x[1] === value
-  var index = getIndexBelowMaxForKey(k, this._limit);
   var bucket = this._storage[index];
   var result = undefined;
   for ( var i = 0; i < bucket.length; i++ ) {
@@ -39,6 +36,19 @@ HashTable.prototype.find = function (k) {
 
 /*
  * Complexity: What is the time complexity of the above functions?
+    1) HashTable() is constant time. O(1)   
+
+    2) insert() is constant time. O(1)
+       Aspects of these functions, such as getIndexBelowMaxForKey()
+       and find(), use iterative operations, but on small values such 
+       as strings and buckets, which are generally small enough to be 
+       negligible.
+    
+    3) retrieve() is constant time. O(1)
+
+    4) remove() is constant time. O(1)
+
+    5) find() is constant time. O(1)
  */
 
 

@@ -34,4 +34,15 @@ treeMethods.contains = function(target, isTrue) {
 
 /*
  * Complexity: What is the time complexity of the above functions?
+    1) extend() is linear time. O(n)
+      Looking up keys is done in constant time, but looping using
+      for (var key in from) is a linear operation.
+    
+    2) addChild() is constant time. O(1)
+
+    3) contains() is linear time. O(n)
+       contains() looks through each node one by one.
+
+    4) Tree() is linear time. O(n)
+       extend() is necessarily called within Tree every time.
  */
