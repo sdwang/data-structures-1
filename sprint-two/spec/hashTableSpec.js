@@ -48,15 +48,28 @@ describe('hashTable', function() {
   });
 
   // (Advanced! Remove the extra "x" when you want the following tests to run)
-  xit ('should double in size when needed', function() {
+  // Built extra test to make sure breakpoint was being reached.
+  // it ('should detect when the max is reached', function() {
+  //   hashTable.insert('heyea', 'a');
+  //   hashTable.insert('hello', 'b');
+  //   hashTable.insert('what', 'c');
+  //   expect(hashTable._maxReached).to.equal(true);
+  // });
+
+  it ('should double in size when needed', function() {
+    var oldHashFunction = window.getIndexBelowMaxForKey;
+    window.getIndexBelowMaxForKey = function() { return 0; };
     _.each(people, function(person) {
       var firstName = person[0], lastName = person[1];
       hashTable.insert(firstName,lastName);
     });
     expect(hashTable._limit).to.equal(16);
+    window.getIndexBelowMaxForKey = oldHashFunction;
   });
 
-  xit ('should halve in size when needed', function() {
+  it ('should halve in size when needed (simple test)', function() {
+    var oldHashFunction = window.getIndexBelowMaxForKey;
+    window.getIndexBelowMaxForKey = function() { return 0; };
     _.each(people, function(person) {
       var firstName = person[0], lastName = person[1];
       hashTable.insert(firstName,lastName);
@@ -68,5 +81,23 @@ describe('hashTable', function() {
     hashTable.remove('John');
     hashTable.remove('Mr.');
     expect(hashTable._limit).to.equal(8);
+    window.getIndexBelowMaxForKey = oldHashFunction;
+  });
+
+  it ('should halve in size when needed', function() {
+    var oldHashFunction = window.getIndexBelowMaxForKey;
+    window.getIndexBelowMaxForKey = function() { return 0; };
+    _.each(people, function(person) {
+      var firstName = person[0], lastName = person[1];
+      hashTable.insert(firstName,lastName);
+    });
+    expect(hashTable._limit).to.equal(16);
+    hashTable.remove('George');
+    hashTable.remove('Dr.');
+    hashTable.remove('Steven');
+    hashTable.remove('John');
+    hashTable.remove('Mr.');
+    expect(hashTable._limit).to.equal(8);
+    window.getIndexBelowMaxForKey = oldHashFunction;
   });
 });
